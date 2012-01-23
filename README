@@ -1,3 +1,11 @@
 Scan-O-Matic
 
 Scan something. Get some cool data!
+
+To add services:
+
+1. copy services/helloworld.js to a file of your choosing in that directory
+2. have something that follows the contract to print out a JSON object
+3. add your plugin:
+
+  services.push(require('./services/helloworld.js'))
