@@ -25,9 +25,11 @@ services.push(require('./services/goodbyeworld.js'))
 
 app = express.createServer()
 
-app.get('/', function(req, res) {
-  res.header('Content-Type', 'application/json');
-  (randomService())(req, res)
+app.get('/productsearch', function(req, res) {
+  var barcode = req.param("barcode", "12345")
+  console.log(barcode)
+  res.header('Content-Type', 'application/json')
+  randomService()(barcode, req, res)
 });
 
 app.listen(opts.port)
@@ -43,7 +45,7 @@ function parseOptions() {
     port: argv.p || 3010
   }
 
-  return opts;
+  return opts
 }
 
 // choose a random service
