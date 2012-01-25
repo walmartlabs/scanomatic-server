@@ -25,15 +25,17 @@ services.push(require('./services/goodbyeworld.js'))
 
 app = express.createServer()
 
+app.set('views', __dirname + '/views')
+app.set("view engine", "hbs")
+app.set('view options', { layout: false })
+app.register('.html', require('hbs'))
+
 app.get('/productsearch', function(req, res) {
   var barcode = req.param("barcode", "12345")
-  console.log(barcode)
-  res.header('Content-Type', 'application/json')
   randomService()(barcode, req, res)
-});
+})
 
-app.listen(opts.port)
-console.log("The Scan-O-Matic is up and listening on port: " + opts.port)
+app.listen(opts.port) && console.log("The Scan-O-Matic is up and listening on port: " + opts.port)
 
 //
 // Functions

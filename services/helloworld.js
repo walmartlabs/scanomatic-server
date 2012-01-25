@@ -1,4 +1,3 @@
 module.exports = function(barcode, req, res) {
-  barcode = barcode || "12345";
-  res.send('{ "msg": "hello barcode: ' + barcode + '" }');
+  res.render('world.html', { title: 'Hello World', dothis: "keep you healthy", barcode: barcode || "12345" })
 }

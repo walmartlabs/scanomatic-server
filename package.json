@@ -13,6 +13,7 @@
     "async": "~0.1",
     "optimist": "~0.2.6",
     "request": "~2.1.1",
+    "hbs": "",
     "express": ""
   },
   "main": "app.js"
