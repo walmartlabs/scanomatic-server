@@ -9,3 +9,20 @@ To add services:
 3. add your plugin:
 
   services.push(require('./services/helloworld.js'))
+
+==================================================
+Some Barcodes to get us started:
+==================================================
+
+04010207     - Snickers Bar
+04965802     - Diet Pepsi
+028400038447 - Kettle Cooked Jalapeno Crisps
+
+==================================================
+Quick n Dirty analysis of existing UPC lookups:
+==================================================
+
+http://search.usa.gov/search/recalls?upc=3500076620&format=json
+
+Great easy JSON format, but everything I've scanned so far comes back as empty
+
