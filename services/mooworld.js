@@ -1,8 +1,28 @@
-module.exports = function(barcode, req, res) {
-  res.render('world.html', { title: 'Moo World', dothis: doTheMoo(barcode), barcode: barcode || "123" })
-}
+var xmlrpc = require('xmlrpc')
+var client = xmlrpc.createClient(
+    { host: 'www.upcdatabase.com', 
+      port: 80, 
+      path: '/xmlrpc'
+    })
 
-function doTheMoo(barcode) {
-    return "Who is the Moo?";
+var rpcKey = 'e5a51bca97dca69e1fe8b1f1560bb507cfbb579e';
+
+module.exports = function(barcode, req, res) {
+    client.methodCall('lookup', [{'rpc_key': rpcKey, "upc":barcode}], handle);
+
+    function handle(error, value) {
+	if (value.status == "fail")
+	    res.render('fail.html', {});
+	else
+	    onSuccess(value)}
+
+    function onSuccess(value) {
+	console.log(JSON.stringify(value));
+	res.render('world.html', 
+		   { title: 'Moo World', 
+		     dothis: value.description || "who knows", 
+		     barcode: barcode || "123"
+		     })}
+		     
 }
 

@@ -36,6 +36,11 @@ app.get('/productsearch', function(req, res) {
   randomService()(barcode, req, res)
 })
 
+app.get('/moosearch', function(req, res) {
+  var barcode = req.param("barcode", "12345")
+  services[2](barcode, req, res)
+})
+
 app.listen(opts.port) && console.log("The Scan-O-Matic is up and listening on port: " + opts.port)
 
 //
