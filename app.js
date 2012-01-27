@@ -33,7 +33,8 @@ app.register('.html', require('hbs'))
 
 app.get('/productsearch', function(req, res) {
   var barcode = req.param("barcode", "12345")
-  randomService()(barcode, req, res)
+  services[2](barcode, req, res)
+//  randomService()(barcode, req, res)
 })
 
 app.get('/moosearch', function(req, res) {
