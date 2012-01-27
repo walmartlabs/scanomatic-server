@@ -19,6 +19,7 @@ var services = []
 services.push(require('./services/helloworld.js'))
 services.push(require('./services/goodbyeworld.js'))
 services.push(require('./services/mooworld.js'))
+services.push(require('./services/randomresponse.js'))
 
 //
 // Main
@@ -32,8 +33,11 @@ app.set('view options', { layout: false })
 app.register('.html', require('hbs'))
 
 app.get('/productsearch', function(req, res) {
-  var barcode = req.param("barcode", "12345")
-  services[2](barcode, req, res)
+  var barcode = req.param("barcode", "randomresponse")
+  if (barcode == 'randomresponse')
+    services[3](req, res)
+  else
+    services[2](barcode, req, res)
 //  randomService()(barcode, req, res)
 })
 
