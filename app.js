@@ -18,6 +18,7 @@ var services = []
 
 services.push(require('./services/helloworld.js'))
 services.push(require('./services/goodbyeworld.js'))
+services.push(require('./services/mooworld.js'))
 
 //
 // Main
