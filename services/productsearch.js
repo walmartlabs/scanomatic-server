@@ -28,14 +28,15 @@ module.exports = function(barcode, req, res) {
     }
 
     function searchFdb() {
-	barcode = trimNumber(barcode);
-	barcode = barcode.substr(0, barcode.length - 1);
-	console.log("searching fDB for barcode " + barcode);
-	var priceAndCountry = fdb.barcode;
+	var fDbbarcode = trimNumber(barcode);
+	fDbbarcode = fDbbarcode.substr(0, fDbbarcode.length - 1);
+	console.log("searching fDB for barcode " + fDbbarcode);
+	var priceAndCountry = fdb.fdb[fDbbarcode];
 	
 	if (priceAndCountry) {
 	    var price = priceAndCountry.split('|')[0];
 	    var country = priceAndCountry.split('|')[1];
+	    console.log("price " + price + ", country " + country);
 	    
 	    client.methodCall('lookup', [{'rpc_key': rpcKey, "upc":barcode}], 
 			      function(error, value) {
@@ -56,12 +57,13 @@ module.exports = function(barcode, req, res) {
 	    searchUpcDb();
     }
 
-	function trimNumber(s) {
-	    while (s.substr(0,1) == '0' && s.length>1) { s = s.substr(1); }
-	    return s;
-	}
+    function trimNumber(s) {
+	while (s.substr(0,1) == '0' && s.length>1) { s = s.substr(1); }
+	return s;
+    }
 
     function searchUpcDb() {
+	console.log("searching upc DB with barcode " + barcode);
 	client.methodCall('lookup', [{'rpc_key': rpcKey, "upc":barcode}], handle);
     }
 
