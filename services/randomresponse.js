@@ -15,11 +15,7 @@ module.exports = function(req, res) {
 	    if (err) 
 		onFileNotExists()
 	    else {
-		res.render('world.html', 
-			   { title: 'Moo World', 
-			     dothis: data, 
-			     barcode: "123"
-			   });
+		res.render('chuckNorris.html', { joke: data });
 		fs.unlink("/tmp/message.txt");
 	    }
 	});

@@ -18,11 +18,9 @@ module.exports = function(barcode, req, res) {
 
     function onSuccess(value) {
 	console.log(JSON.stringify(value));
-	res.render('world.html', 
-		   { title: 'Moo World', 
-		     dothis: value.description || "who knows", 
-		     barcode: barcode || "123"
-		     })}
+	res.render('product.html', 
+		   { name: value.description || "Thingy",
+		     country: value.issuerCountry || "some country"})}
 		     
 }
 
