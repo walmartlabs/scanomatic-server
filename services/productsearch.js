@@ -21,8 +21,8 @@ module.exports = function(barcode, req, res) {
 	searchFDb();
 
     function lookupWalmartCom(id) {
-	
-	res.render('product.html', 
+//	http://mobile.walmart.com/m/j?service=Item&method=get&p1=11027487
+	res.render('walmartCom.html', 
 		   { name: "Walmart Com",
 		     country: "Country"})
     }
