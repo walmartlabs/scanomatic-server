@@ -24,7 +24,9 @@ module.exports = function(barcode, req, res) {
 //	http://mobile.walmart.com/m/j?service=Item&method=get&p1=11027487
 	res.render('walmartCom.html', 
 		   { name: "Walmart Com",
-		     country: "Country"})
+		     country: "Country",
+		     productPage: 'http://upcdata.info/lookup/' + barcode
+		   });
     }
 
     function searchFdb() {
@@ -44,12 +46,14 @@ module.exports = function(barcode, req, res) {
 				      res.render('fDb.html', 
 						 { name: "We found a price",
 						   'price': price,
-						   'country': country });
+						   'country': country, 
+						   productPage: 'http://upcdata.info/lookup/' + barcode});
 				  } else {
 				      res.render('fDb.html', 
 						 { name: value.description,
 						   'price': price,
-						   'country': value.issuerCountry });
+						   'country': value.issuerCountry,
+						   productPage: 'http://upcdata.info/lookup/' + barcode });
 				  }
 			      })
 	}
@@ -77,7 +81,8 @@ module.exports = function(barcode, req, res) {
 	console.log(JSON.stringify(value));
 	res.render('product.html', 
 		   { name: value.description || "Thingy",
-		     country: value.issuerCountry || "some country"})}
+		     country: value.issuerCountry || "some country",
+		     productPage: 'http://upcdata.info/lookup/' + barcode})}
 		     
 }
 
