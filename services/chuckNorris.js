@@ -3,7 +3,8 @@ var request = require('request');
 var pics = ['http://9gag.com/gag/1285348', 
 	    'http://9gag.com/gag/285408', 
 	    'http://imgfave.com/view/1763358',
-	    'http://9gag.com/gag/965683'
+	    'http://9gag.com/gag/965683',
+	    'http://memegenerator.net/instance/10932327'
 	   ];
 
 module.exports = function(req, res) {
