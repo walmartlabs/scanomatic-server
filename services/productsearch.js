@@ -6,7 +6,7 @@ var client = xmlrpc.createClient(
     });
 
 require('./jdb');
-require('/etc/fDb');
+//require('/etc/fDb');
 
 var rpcKey = 'e5a51bca97dca69e1fe8b1f1560bb507cfbb579e';
 
@@ -28,13 +28,13 @@ module.exports = function(barcode, req, res) {
     }
 
     function searchFdb() {
-	var rec = fdb.barcode;
+//	var rec = fdb.barcode;
 	
-	if (rec)
-	    res.render('product.html', 
-		       { name: "Fucked DB",
-			 country: "Fucked up country"})
-	else
+//	if (rec)
+//	    res.render('product.html', 
+//		       { name: "Fucked DB",
+//			 country: "Fucked up country"})
+//	else
 	    searchUpcDb();
     }
 
