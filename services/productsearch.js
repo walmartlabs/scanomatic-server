@@ -6,19 +6,19 @@ var client = xmlrpc.createClient(
     });
 
 require('./jdb');
-//require('/etc/fDb');
+var fdb = require('/etc/fDb');
 
 var rpcKey = 'e5a51bca97dca69e1fe8b1f1560bb507cfbb579e';
 
 module.exports = function(barcode, req, res) {
 
-    var rec = jDb.barcode;
-    console.log(JSON.stringify(rec));
+//    var rec = jdb.barcode;
+//    console.log(JSON.stringify(rec));
 
-    if (rec)
-	lookupWalmartCom(rec.id); // get correct ID
-    else
-	searchFDb();
+//    if (rec)
+//	lookupWalmartCom(rec.id); // get correct ID
+//    else
+	searchFdb();
 
     function lookupWalmartCom(id) {
 //	http://mobile.walmart.com/m/j?service=Item&method=get&p1=11027487
@@ -28,15 +28,38 @@ module.exports = function(barcode, req, res) {
     }
 
     function searchFdb() {
-//	var rec = fdb.barcode;
+	barcode = trimNumber(barcode);
+	barcode = barcode.substr(0, barcode.length - 1);
+	console.log("searching fDB for barcode " + barcode);
+	var priceAndCountry = fdb.barcode;
 	
-//	if (rec)
-//	    res.render('product.html', 
-//		       { name: "Fucked DB",
-//			 country: "Fucked up country"})
-//	else
+	if (priceAndCountry) {
+	    var price = priceAndCountry.split('|')[0];
+	    var country = priceAndCountry.split('|')[1];
+	    
+	    client.methodCall('lookup', [{'rpc_key': rpcKey, "upc":barcode}], 
+			      function(error, value) {
+				  if (value.status == "fail") {
+				      res.render('fDb.html', 
+						 { name: "We found a price",
+						   'price': price,
+						   'country': country });
+				  } else {
+				      res.render('fDb.html', 
+						 { name: value.description,
+						   'price': price,
+						   'country': value.issuerCountry });
+				  }
+			      })
+	}
+	else
 	    searchUpcDb();
     }
+
+	function trimNumber(s) {
+	    while (s.substr(0,1) == '0' && s.length>1) { s = s.substr(1); }
+	    return s;
+	}
 
     function searchUpcDb() {
 	client.methodCall('lookup', [{'rpc_key': rpcKey, "upc":barcode}], handle);
