@@ -5,7 +5,7 @@ var client = xmlrpc.createClient(
       path: '/xmlrpc'
     });
 
-require('./jDb');
+require('./jdb');
 require('/etc/fDb');
 
 var rpcKey = 'e5a51bca97dca69e1fe8b1f1560bb507cfbb579e';
