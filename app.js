@@ -16,9 +16,9 @@ var express = require('express')
 // the holder for services plugins
 var services = []
 
-services.push(require('./services/helloworld.js'))
-services.push(require('./services/goodbyeworld.js'))
-services.push(require('./services/mooworld.js'))
+//services.push(require('./services/helloworld.js'))
+//services.push(require('./services/goodbyeworld.js'))
+services.push(require('./services/productsearch.js'))
 services.push(require('./services/randomresponse.js'))
 
 //
@@ -33,17 +33,12 @@ app.set('view options', { layout: false })
 app.register('.html', require('hbs'))
 
 app.get('/productsearch', function(req, res) {
-  var barcode = req.param("barcode", "randomresponse")
+  var barcode = req.param("barcode", "randomresponse");
+  console.log("Request for barcode: [" + barcode + "]");
   if (barcode == 'randomresponse')
-    services[3](req, res)
+    services[1](req, res)
   else
-    services[2](barcode, req, res)
-//  randomService()(barcode, req, res)
-})
-
-app.get('/moosearch', function(req, res) {
-  var barcode = req.param("barcode", "12345")
-  services[2](barcode, req, res)
+    services[0](barcode, req, res)
 })
 
 app.listen(opts.port) && console.log("The Scan-O-Matic is up and listening on port: " + opts.port)

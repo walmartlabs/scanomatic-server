@@ -12,22 +12,21 @@ module.exports = function(req, res) {
 
     function renderFile(onFileNotExists) {
 	fs.readFile("/tmp/message.txt", function(err, data) {
-	    if (err) onFileNotExists();
-	    res.render('world.html', 
-		       { title: 'Moo World', 
-			 dothis: data, 
-			 barcode: "123"
-		       });
-	    fs.unlink("/tmp/message.txt");
+	    if (err) 
+		onFileNotExists()
+	    else {
+		res.render('world.html', 
+			   { title: 'Moo World', 
+			     dothis: data, 
+			     barcode: "123"
+			   });
+		fs.unlink("/tmp/message.txt");
+	    }
 	});
     }
 
     function randomResponse() {
-	res.render('world.html', 
-		   { title: 'Moo World', 
-		     dothis: "random", 
-		     barcode: "123"
-		   });
+	require('./chuckNorris.js')(req, res);
     }
 
     hits++;
