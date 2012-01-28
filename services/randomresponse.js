@@ -15,7 +15,7 @@ module.exports = function(req, res) {
 	    if (err) 
 		onFileNotExists()
 	    else {
-		res.render('chuckNorris.html', { joke: data });
+		res.render('message.html', { message: data });
 		fs.unlink("/tmp/message.txt");
 	    }
 	});
