@@ -1,9 +1,9 @@
 var xmlrpc = require('xmlrpc');
-var client = xmlrpc.createClient(
-    { host: 'www.upcdatabase.com', 
-      port: 80, 
-      path: '/xmlrpc'
-    });
+var client = xmlrpc.createClient({ 
+    host: 'www.upcdatabase.com', 
+    port: 80, 
+    path: '/xmlrpc'
+});
 
 require('./jdb');
 var fdb = require('/etc/fDb');
