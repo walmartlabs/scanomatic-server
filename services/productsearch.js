@@ -1,25 +1,36 @@
-require('./jdb');
+var jdb = require('./jdb');
 var fdb = require('/etc/fDb');
 var upcDb = require('./upcDatabase');
-
+var request = require('request');
 var chuckNorris = require('./chuckNorris')
 
 module.exports = function(barcode, req, res) {
 
-//    var rec = jdb.barcode;
-//    console.log(JSON.stringify(rec));
+    var itemId = jdb[toWmUpc(barcode)];
 
-//    if (rec)
-//	lookupWalmartCom(rec.id); // get correct ID
-//    else
+    if (itemId)
+	lookupWalmartCom(itemId);
+    else
 	searchFdb();
 
     function lookupWalmartCom(id) {
-//	http://mobile.walmart.com/m/j?service=Item&method=get&p1=11027487
+	request('http://mobile.walmart.com/m/j?service=Item&method=get&p1=' + id, 
+		handleWalmartCom);
+    }
+
+    function handleWalmartCom(error, response, body) {
+	if (!error && response.statusCode == 200)
+	    renderWalmartCom(barcode, JSON.parse(body));
+	else
+	    res.render('fail.html', {});
+    }
+
+    function renderWalmartCom(upc, body) {
+	console.log(body);
 	res.render('walmartCom.html', 
-		   { name: "Walmart Com",
+		   { name: body.name,
 		     country: "Country",
-		     productPage: 'http://upcdata.info/lookup/' + barcode
+		     productPage: 'http://upcdata.info/lookup/' + upc
 		   });
     }
 
@@ -48,11 +59,13 @@ module.exports = function(barcode, req, res) {
     }
 
     function lookupPriceAndCountry() {
-	var fDbbarcode = trimNumber(barcode);
-	fDbbarcode = fDbbarcode.substr(0, fDbbarcode.length - 1);
-	return fdb.fdb[fDbbarcode];
+	return fdb.fdb[toWmUpc(barcode)];
     }
 
+    function toWmUpc(barcode) {
+	var fDbbarcode = trimNumber(barcode);
+	return fDbbarcode.substr(0, fDbbarcode.length - 1);
+    }
 
     function searchUpcDb() {
 	upcDb.lookup(barcode, handle);
