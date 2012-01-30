@@ -27,7 +27,7 @@ module.exports = function(barcode, req, res) {
 	res.render('walmartCom.html', 
 		   { name: body.name,
 		     country: "Country",
-		     productPage: 'http://upcdata.info/lookup/' + upc
+		     productPage: body.url
 		   });
     }
 

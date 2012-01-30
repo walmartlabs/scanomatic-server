@@ -18,7 +18,7 @@ var services = []
 
 //services.push(require('./services/helloworld.js'))
 //services.push(require('./services/goodbyeworld.js'))
-services.push(require('./services/productsearch.js'))
+services.push(require('./services/productsearch2.js'))
 services.push(require('./services/randomresponse.js'))
 
 //
