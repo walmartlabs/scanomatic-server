@@ -1,28 +1,25 @@
 var jdb = require('./jdb');
 var fdb = require('/etc/fDb');
 var upcDb = require('./upcDatabase');
-var request = require('request');
+var walmartComDb = require('./walmartCom');
 var chuckNorris = require('./chuckNorris')
 
 module.exports = function(barcode, req, res) {
 
-    var itemId = jdb[toWmUpc(barcode)];
+    useItemId(jdb[toWmUpc(barcode)]);
 
-    if (itemId)
-	lookupWalmartCom(itemId);
-    else
-	searchFdb();
-
-    function lookupWalmartCom(id) {
-	request('http://mobile.walmart.com/m/j?service=Item&method=get&p1=' + id, 
-		handleWalmartCom);
+    function useItemId(itemId) {
+	if (itemId)
+	    walmartComDb.lookupByItemId(itemId, handleWalmartCom);
+	else
+	    searchFdb();
     }
 
     function handleWalmartCom(error, response, body) {
 	if (!error && response.statusCode == 200)
 	    renderWalmartCom(barcode, JSON.parse(body));
 	else
-	    res.render('fail.html', {});
+	    searchFdb();
     }
 
     function renderWalmartCom(upc, body) {
