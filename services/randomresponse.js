@@ -13,7 +13,7 @@ module.exports = function(req, res) {
     }
 
     function decideResponse() {
-	if (hits % 30 == 0)
+	if (hits % 300000 == 0)
 	    randomResponse();
 	else
 	    res.send('nothing');
