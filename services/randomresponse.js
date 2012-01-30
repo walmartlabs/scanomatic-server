@@ -1,6 +1,6 @@
 var fs = require('fs');
 var hits = 0;
-
+var renderChuck = require('./chuckNorris');
 module.exports = function(req, res) {
 
     fs.readFile("/tmp/message.txt", handleReadFile);
@@ -25,7 +25,7 @@ module.exports = function(req, res) {
     }
 
     function randomResponse() {
-	require('./chuckNorris.js')(req, res);
+	renderChuck(res);
     }
 
     hits++;

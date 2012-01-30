@@ -14,9 +14,7 @@ module.exports = {
     inCache : function(id) { return (id in myCache)},
 
     lookupService : function(upc, handler) {
-	console.log("upc is " + upc);
 	client.methodCall('lookup', [{'rpc_key': rpcKey, "upc":upc}], function(error, value) {
-	    console.log("got value " + JSON.stringify(value));
 	    handler(!error && value.status == "success" ? value : null);
 	});
     },

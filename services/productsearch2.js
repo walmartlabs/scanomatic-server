@@ -2,6 +2,7 @@ var fdbLookup = require('./fdbLookup');
 var upcLookup = require('./upcLookup');
 var wmComLookup = require('./wmComLookup');
 var renderChuck = require('./chuckNorris');
+var countryLookup = require('./countryCodes');
 
 module.exports = function(upc, req, res) {
 
@@ -21,7 +22,10 @@ module.exports = function(upc, req, res) {
     //-----------------------------
 
     function render() {
-	product.country = product.countryCode;
+	console.log("rendering " + JSON.stringify(product));
+	var countryCode = product.countryCode;
+	if (countryCode)
+	    product.country = countryLookup[countryCode.toUpperCase()];
 	if (!product.name)
 	    renderChuck(res);
 	else if (!product.price)
@@ -32,16 +36,13 @@ module.exports = function(upc, req, res) {
 
     function cacheLookup(id, service, nextFn) {
 	var cached = service.getCache(id);
-	console.log("looking up [" + id + "]: " + cached);
 	
 	if (!(service.inCache(id))) {
-	    console.log("looking up service"); 
 	    service.lookupService(id, handleLookup);
 	}
 	else go(cached, service.cleanData);
 
 	function handleLookup(data) {
-	    console.log("setting in cache " + data);
 	    service.setCache(id, data);
 	    go(data, service.cleanData);
 	}
@@ -54,9 +55,7 @@ module.exports = function(upc, req, res) {
     }
 
     function merge(data) {
-	console.log(product);
 	for (var attrname in data) {product[attrname] = data[attrname]; }
-	console.log(product);
     }
 
     function toWmUpc(barcode) {

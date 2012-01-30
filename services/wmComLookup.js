@@ -10,7 +10,6 @@ module.exports = {
     inCache : function(id) { return (id in myCache)},
 
     lookupService : function(upc, handler) {
-	console.log('cache: ' + myCache);
 	if (!jdb[upc]) 
 	    handler(null);
 	else 
