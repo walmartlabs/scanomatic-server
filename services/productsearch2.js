@@ -35,6 +35,7 @@ module.exports = function(upc, req, res) {
     }
 
     function cacheLookup(id, service, nextFn) {
+	console.log('lookup [' + id + ']');
 	var cached = service.getCache(id);
 	
 	if (!(service.inCache(id))) {
@@ -48,6 +49,7 @@ module.exports = function(upc, req, res) {
 	}
 
 	function go(found, cleanData) {
+	    console.log('found ' + found);
 	    if (found) merge(cleanData(found));
 	    nextFn();
 	}

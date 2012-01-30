@@ -10,9 +10,11 @@ module.exports = {
     inCache : function(id) { return (id in myCache)},
 
     lookupService : function(upc, handler) {
-	if (!jdb[upc]) 
+	console.log('look up ' + upc + ' in wm');
+	if (!jdb[upc]) {
+	    console.log('not in jdb');
 	    handler(null);
-	else 
+	} else 
 	    request(lookupUrl + jdb[upc], function(error, response, body) {
 		handler(!error && response.statusCode == 200 ? JSON.parse(body) : null);
 	    });
