@@ -1,13 +1,14 @@
 var fdbLookup = require('./fdbLookup');
 var upcLookup = require('./upcLookup');
 var wmComLookup = require('./wmComLookup');
+var renderChuck = require('./chuckNorris');
 
 module.exports = function(upc, req, res) {
 
     var product = { productPage:'http://upcdata.info/lookup/' + upc};
     var wmUpc = toWmUpc(upc);
-    
-    fdbLookup(wmUpc, merge, doUpcLookup);
+
+    cacheLookup(wmUpc, fdbLookup, doUpcLookup);
 
     function doUpcLookup() {
 	cacheLookup(upc, upcLookup, doWmComLookup);
@@ -17,39 +18,46 @@ module.exports = function(upc, req, res) {
 	cacheLookup(wmUpc, wmComLookup, render);
     }
 
+    //-----------------------------
+
     function render() {
-	res.render('walmartCom.html', 
-		   { name: product.name,
-		     country: product.country,
-		     productPage: product.productPage
-		   });
+	if (!product.name)
+	    renderChuck(res);
+	else
+	    res.render('walmartCom.html', 
+		       { name: product.name,
+			 country: product.country,
+			 productPage: product.productPage
+		       });
     }
 
     function cacheLookup(id, service, nextFn) {
 	console.log("looking up [" + id + "]");
 	var cached = service.getCache(id);
 	
-	if (!cached) service.lookupService(id, handleLookup);
+	if (!(service.inCache(id))) {
+	    console.log("looking up service"); service.lookupService(id, handleLookup);
+	}
 	else go(cached, service.cleanData);
 
 	function handleLookup(data) {
-	    if (data) service.setCache(data);
+	    service.setCache(id, data);
 	    go(data, service.cleanData);
 	}
 
 	function go(found, cleanData) {
 	    if (found) merge(cleanData(found));
-
 	    nextFn();
 	}
 
     }
 
-	function merge(data) {
-	    console.log(product);
-	    for (var attrname in data) {product[attrname] = data[attrname]; }
-	    console.log(product);
-	}
+    function merge(data) {
+	console.log(product);
+	for (var attrname in data) {product[attrname] = data[attrname]; }
+	console.log(product);
+    }
+
     function toWmUpc(barcode) {
 	var fDbbarcode = trimNumber(barcode);
 	return fDbbarcode.substr(0, fDbbarcode.length - 1);

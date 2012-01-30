@@ -5,10 +5,12 @@ var lookupUrl = 'http://mobile.walmart.com/m/j?service=Item&method=get&p1=';
 
 module.exports = {
 
-    getCache : function(id) { myCache[id] },
+    getCache : function(id) { return myCache[id] },
     setCache : function(id, val) { myCache[id] = val },
+    inCache : function(id) { return (id in myCache)},
 
     lookupService : function(upc, handler) {
+	console.log('cache: ' + myCache);
 	if (!jdb[upc]) 
 	    handler(null);
 	else 

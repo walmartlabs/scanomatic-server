@@ -7,7 +7,7 @@ var pics = ['http://9gag.com/gag/1285348',
 	    'http://memegenerator.net/instance/10932327'
 	   ];
 
-module.exports = function(req, res) {
+module.exports = function(res) {
     request('http://api.icndb.com/jokes/random', function (error, response, body) {
 	if (!error && response.statusCode == 200) {
 	    res.render('chuckNorris.html', 

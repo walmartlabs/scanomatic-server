@@ -1,14 +1,16 @@
 var fdb = require('/etc/fdb.js');
 
-module.exports = function(wmUpc, onSuccessFn, nextFn) {
-    console.log('lookup up [' + wmUpc + '] on fdb');
-    var found = fdb[wmUpc];
-    console.log('found ' + found);
-    if (found) onSuccessFn(cleanData(found));
+module.exports = {
 
-    nextFn();
+    getCache : function(id) { fdb[id] },
+    setCache : function(id, val) { fdb[id] = val},
+    inCache : function(id) { return (id in fdb)},
 
-    function cleanData(rawData) {
+    lookupService : function(upc, handler) {
+	handler(null);
+    },
+
+    cleanData : function(rawData) {
 	var split = rawData.split('|');
 	return {"price":split[0], "countryCode":split[1]};
     }
