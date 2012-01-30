@@ -21,26 +21,27 @@ module.exports = function(upc, req, res) {
     //-----------------------------
 
     function render() {
+	product.country = product.countryCode;
 	if (!product.name)
 	    renderChuck(res);
-	else
-	    res.render('walmartCom.html', 
-		       { name: product.name,
-			 country: product.country,
-			 productPage: product.productPage
-		       });
+	else if (!product.price)
+	    res.render('product.html', product);
+	else 
+	    res.render('walmartCom.html', product);
     }
 
     function cacheLookup(id, service, nextFn) {
-	console.log("looking up [" + id + "]");
 	var cached = service.getCache(id);
+	console.log("looking up [" + id + "]: " + cached);
 	
 	if (!(service.inCache(id))) {
-	    console.log("looking up service"); service.lookupService(id, handleLookup);
+	    console.log("looking up service"); 
+	    service.lookupService(id, handleLookup);
 	}
 	else go(cached, service.cleanData);
 
 	function handleLookup(data) {
+	    console.log("setting in cache " + data);
 	    service.setCache(id, data);
 	    go(data, service.cleanData);
 	}

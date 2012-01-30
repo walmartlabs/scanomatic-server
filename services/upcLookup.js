@@ -9,7 +9,7 @@ var client = xmlrpc.createClient({
 
 module.exports = {
 
-    getCache : function(id) { myCache[id] },
+    getCache : function(id) { return myCache[id] },
     setCache : function(id, val) { myCache[id] = val },
     inCache : function(id) { return (id in myCache)},
 
